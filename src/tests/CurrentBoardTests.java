@@ -93,6 +93,41 @@ public class CurrentBoardTests {
         boardQAHaifa56.click();
         Thread.sleep(3000);
 
+        List<WebElement> listIsIn = driver.findElements(By.xpath("//*[@class='list-header-target js-editing-target']"));
+        int listIsInSize = listIsIn.size();
+        if (listIsInSize<=0){
+            WebElement newListButtonKey = driver.findElement(By.xpath("//a[@class='open-add-list js-open-add-list']"));
+            newListButtonKey.click();
+            Thread.sleep(2000);
+
+            WebElement listButtonField = driver.findElement(By.xpath("//input[@class='list-name-input']"));
+            listButtonField.sendKeys("Новый список");
+            Thread.sleep(2000);
+
+            WebElement submitNewListButtonKey = driver.findElement(By.xpath("//input[@class ='primary mod-list-add-button js-save-edit']"));
+            submitNewListButtonKey.click();
+            Thread.sleep(2000);
+
+//            driver.navigate().refresh();
+//            Thread.sleep(4000);
+
+            WebElement addACard = driver.findElement(By.xpath("//span[@class='js-add-a-card']"));
+            addACard.click();
+            Thread.sleep(2000);
+
+            WebElement addAnotherCardField = driver.findElement(By.xpath("//textarea[@class='list-card-composer-textarea js-card-title']"));
+            addAnotherCardField.sendKeys("Первая карточка");
+            Thread.sleep(2000);
+
+            WebElement submitAnotherCard = driver.findElement(By.xpath("//input[@class='primary confirm mod-compact js-add-card']"));
+            submitAnotherCard.click();
+            Thread.sleep(2000);
+
+            driver.navigate().refresh();
+            Thread.sleep(4000);
+        }
+
+
         List<WebElement> cardInBoardBeforeAction = driver.findElements(By.xpath("//a[@class='list-card js-member-droppable ui-droppable']"));
         int sizeBeforeAction = cardInBoardBeforeAction.size();
         System.out.println("Текущее количество карточек: "+sizeBeforeAction);
