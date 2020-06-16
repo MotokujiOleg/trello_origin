@@ -1,4 +1,4 @@
-package tests;
+package tests.oldtests;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -7,20 +7,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import tests.TestBase;
+
+//Old version of tests, before HW Sel#9-------------------------------------
+
+public class TrelloLoginTests extends TestBase {
+    WebDriver driver;
 
 
 
-public class TrelloLoginTests {
-
-    public WebDriver driver;
-
-    @BeforeMethod
-    public void initAppl() throws InterruptedException {
-        driver = new ChromeDriver();
-        driver.get("http://www.trello.com/");
-        Thread.sleep(5000);
-
-    }
     @Test
 
     public void workWithApplPositive() throws InterruptedException{
@@ -31,11 +26,11 @@ public class TrelloLoginTests {
         Thread.sleep(5000);
 
         WebElement loginInputField = driver.findElement(By.xpath("//input[@id = 'user']"));
-        loginInputField.sendKeys("manpelolegff471@gmail.com");
+        loginInputField.sendKeys(LOGIN);
         Thread.sleep(1000);
 
         WebElement passwordInputField = driver.findElement(By.xpath("//input[@id = 'password']"));
-        passwordInputField.sendKeys("Oleg1304");
+        passwordInputField.sendKeys(PASSWORD);
         Thread.sleep(1000);
 
         WebElement loginButtonNext = driver.findElement(By.xpath("//input[@id = 'login']"));
@@ -58,7 +53,7 @@ public class TrelloLoginTests {
         Thread.sleep(1000);
 
         WebElement passwordInputField = driver.findElement(By.xpath("//input[@id = 'password']"));
-        passwordInputField.sendKeys("Oleg1304");
+        passwordInputField.sendKeys(PASSWORD);
         Thread.sleep(1000);
 
         WebElement loginButtonNext = driver.findElement(By.xpath("//input[@id = 'login']"));
@@ -78,7 +73,7 @@ public class TrelloLoginTests {
         Thread.sleep(5000);
 
         WebElement loginInputField = driver.findElement(By.xpath("//input[@id = 'user']"));
-        loginInputField.sendKeys("manpelolegff471@gmail.com");
+        loginInputField.sendKeys(LOGIN);
         Thread.sleep(1000);
 
         WebElement passwordInputField = driver.findElement(By.xpath("//input[@id = 'password']"));
@@ -94,11 +89,5 @@ public class TrelloLoginTests {
 
     }
 
-
-
-    @AfterMethod
-    public void tearDown(){
-        driver.quit();
-    }
 
 }
