@@ -1,13 +1,21 @@
 package tests;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import tests.TestBase;
 
 import java.util.List;
 
-public class TrelloCreateNewCard extends TestBase {
+
+
+public class CurrentBoardTests extends TestBase {
+
 
     @BeforeMethod
     public void initTests() throws InterruptedException {
@@ -35,6 +43,38 @@ public class TrelloCreateNewCard extends TestBase {
 
     }
 
+
+    @Test
+    public void createNewList() throws InterruptedException {
+        List<WebElement> listInDashBoardsBeforeAction = driver.findElements(By.xpath("//*[@class = 'js-list list-wrapper']"));
+        int sizeBeforeAction = listInDashBoardsBeforeAction.size();
+        System.out.println("Текущее количество листов: "+sizeBeforeAction);
+        Thread.sleep(2000);
+
+        WebElement newListButtonKey = driver.findElement(By.xpath("//a[@class='open-add-list js-open-add-list']"));
+        newListButtonKey.click();
+        Thread.sleep(2000);
+
+        WebElement listButtonField = driver.findElement(By.xpath("//input[@class='list-name-input']"));
+        listButtonField.sendKeys("Пятый список");
+        Thread.sleep(2000);
+
+        WebElement submitNewListButtonKey = driver.findElement(By.xpath("//input[@class ='primary mod-list-add-button js-save-edit']"));
+        submitNewListButtonKey.click();
+        Thread.sleep(2000);
+
+        List<WebElement> listInDashBoardsAfterAction = driver.findElements(By.xpath("//*[@class = 'js-list list-wrapper']"));
+        int sizeAfterAction = listInDashBoardsAfterAction.size();
+        System.out.println("Количество листов после добавления: " +sizeAfterAction);
+        Thread.sleep(2000);
+        Assert.assertEquals(sizeAfterAction, sizeBeforeAction+1);
+
+        System.out.println("Количество добавленных листов: " + (sizeAfterAction-sizeBeforeAction));
+
+
+
+    }
+
     @Test
     public void createNewCard() throws InterruptedException {
         List<WebElement> listIsIn = driver.findElements(By.xpath("//*[@class='list-header-target js-editing-target']"));
@@ -51,9 +91,6 @@ public class TrelloCreateNewCard extends TestBase {
             WebElement submitNewListButtonKey = driver.findElement(By.xpath("//input[@class ='primary mod-list-add-button js-save-edit']"));
             submitNewListButtonKey.click();
             Thread.sleep(2000);
-
-//            driver.navigate().refresh();
-//            Thread.sleep(4000);
 
             WebElement addACard = driver.findElement(By.xpath("//span[@class='js-add-a-card']"));
             addACard.click();
@@ -96,8 +133,13 @@ public class TrelloCreateNewCard extends TestBase {
         int sizeAfterAction = cardInBoardAfterAction.size();
         System.out.println("Количество карточек после добавление: "+sizeAfterAction);
         Thread.sleep(2000);
+        Assert.assertEquals(sizeAfterAction, sizeBeforeAction+1);
 
         System.out.println("Количество добавленных карточек: " + (sizeAfterAction-sizeBeforeAction));
+
+
+
+
 
     }
 

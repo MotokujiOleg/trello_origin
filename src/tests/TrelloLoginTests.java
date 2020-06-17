@@ -1,18 +1,19 @@
-package tests.oldtests;
+package tests;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import tests.TestBase;
 
-//Old version of tests, before HW Sel#9-------------------------------------
+
 
 public class TrelloLoginTests extends TestBase {
-    WebDriver driver;
+
 
 
 
@@ -37,8 +38,11 @@ public class TrelloLoginTests extends TestBase {
         loginButtonNext.click();
         Thread.sleep(3000);
 
-        System.out.println("Text Dashboard button: " + driver.findElement(By.xpath("//span[@class = 'MEu8ZECLGMLeab']")).getText());
+        String textDashboardButton = driver.findElement(By.xpath("//span[@class = 'MEu8ZECLGMLeab']")).getText();
+
+        System.out.println("Text Dashboard button: " + textDashboardButton);
         Thread.sleep(5000);
+        Assert.assertEquals("Boards", textDashboardButton);
     }
 
     @Test
@@ -60,8 +64,11 @@ public class TrelloLoginTests extends TestBase {
         loginButtonNext.click();
         Thread.sleep(3000);
 
-        System.out.println("Error text board: " + driver.findElement(By.xpath("//*[@id='error']//*[@class = 'error-message']")).getText());
+        String errorTestBoard = driver.findElement(By.xpath("//*[@id='error']//*[@class = 'error-message']")).getText();
+
+        System.out.println("Error text board: " + errorTestBoard);
         Thread.sleep(5000);
+        Assert.assertEquals("Аккаунт с таким адресом электронной почты не существует", errorTestBoard);
 
     }
 
@@ -84,8 +91,11 @@ public class TrelloLoginTests extends TestBase {
         loginButtonNext.click();
         Thread.sleep(3000);
 
-        System.out.println("Error text board: " + driver.findElement(By.xpath("//*[@id='password-error']//*[@class = 'error-message']")).getText());
+        String errorTestBoard = driver.findElement(By.xpath("//*[@id='password-error']//*[@class = 'error-message']")).getText();
+
+        System.out.println("Error text board: " + errorTestBoard);
         Thread.sleep(5000);
+        Assert.assertEquals("Указан неправильный адрес и/или пароль. Вам нужна помощь со входом?", errorTestBoard);
 
     }
 
