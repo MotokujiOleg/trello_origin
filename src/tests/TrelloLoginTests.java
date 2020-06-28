@@ -10,11 +10,21 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import pages.BoardsPageHelper;
+import pages.LoginPageHelper;
 import tests.TestBase;
 
 
 
 public class TrelloLoginTests extends TestBase {
+    LoginPageHelper loginPage;
+    BoardsPageHelper boardsPage;
+
+    @BeforeMethod
+    public void initTests(){
+        loginPage = new LoginPageHelper(driver);
+        boardsPage = new BoardsPageHelper(driver);
+    }
 
 
 
@@ -23,47 +33,24 @@ public class TrelloLoginTests extends TestBase {
 
     public void workWithApplPositive() throws InterruptedException{
 
-
-        WebElement loginButton = driver.findElement(By.xpath("//*[@class = 'btn btn-sm btn-link text-white']"));
-        loginButton.click();
-        waitUntilElementIsClickable(By.xpath("//*[@class = 'btn btn-sm btn-link text-white']"), 10);
-
-        WebElement loginInputField = driver.findElement(By.xpath("//input[@id = 'user']"));
-        loginInputField.sendKeys(LOGIN);
-        waitUntilElementIsVisible(By.xpath("//input[@id = 'user']"), 5);
-
-        WebElement passwordInputField = driver.findElement(By.xpath("//input[@id = 'password']"));
-        passwordInputField.sendKeys(PASSWORD);
-        waitUntilElementIsVisible(By.xpath("//input[@id = 'password']"), 5);
-
-        WebElement loginButtonNext = driver.findElement(By.xpath("//input[@id = 'login']"));
-        loginButtonNext.click();
-        waitUntilElementIsClickable(By.xpath("//input[@id = 'login']"),10);
+        loginPage.openLoginPage();
+        loginPage.enterLogin(LOGIN);
+        loginPage.enterPassword(PASSWORD);
+        loginPage.clickNextButton();
 
         String textDashboardButton = driver.findElement(By.xpath("//span[@class = 'MEu8ZECLGMLeab']")).getText();
 
         System.out.println("Text Dashboard button: " + textDashboardButton);
-        Assert.assertEquals("Boards", textDashboardButton);
+        Assert.assertEquals("Boards", boardsPage.getButtonBoardsText());
     }
 
     @Test
     public void workWithApplNegativeEmail() throws InterruptedException{
 
-        WebElement loginButton = driver.findElement(By.xpath("//*[@class = 'btn btn-sm btn-link text-white']"));
-        loginButton.click();
-        waitUntilElementIsClickable(By.xpath("//*[@class = 'btn btn-sm btn-link text-white']"), 10);
-
-        WebElement loginInputField = driver.findElement(By.xpath("//input[@id = 'user']"));
-        loginInputField.sendKeys("dsadadadasdas@gmail.com");
-        waitUntilElementIsVisible(By.xpath("//input[@id = 'user']"), 5);
-
-        WebElement passwordInputField = driver.findElement(By.xpath("//input[@id = 'password']"));
-        passwordInputField.sendKeys(PASSWORD);
-        waitUntilElementIsVisible(By.xpath("//input[@id = 'password']"), 5);
-
-        WebElement loginButtonNext = driver.findElement(By.xpath("//input[@id = 'login']"));
-        loginButtonNext.click();
-        waitUntilElementIsClickable(By.xpath("//input[@id = 'login']"),10);
+        loginPage.openLoginPage();
+        loginPage.enterLogin("somenegativemail@gmail.com");
+        loginPage.enterPassword(PASSWORD);
+        loginPage.clickNextButton();
 
         String errorTestBoard = driver.findElement(By.xpath("//*[@id='error']//*[@class = 'error-message']")).getText();
 
@@ -77,25 +64,12 @@ public class TrelloLoginTests extends TestBase {
     @Test
     public void workWithApplNegativePassword() throws InterruptedException{
 
-        WebElement loginButton = driver.findElement(By.xpath("//*[@class = 'btn btn-sm btn-link text-white']"));
-        loginButton.click();
-        waitUntilElementIsClickable(By.xpath("//*[@class = 'btn btn-sm btn-link text-white']"), 10);
-
-        WebElement loginInputField = driver.findElement(By.xpath("//input[@id = 'user']"));
-        loginInputField.sendKeys(LOGIN);
-        waitUntilElementIsVisible(By.xpath("//input[@id = 'user']"), 5);
-
-        WebElement passwordInputField = driver.findElement(By.xpath("//input[@id = 'password']"));
-        passwordInputField.sendKeys("!@#$!$@!@#!");
-        waitUntilElementIsVisible(By.xpath("//input[@id = 'password']"), 5);
-
-        WebElement loginButtonNext = driver.findElement(By.xpath("//input[@id = 'login']"));
-        loginButtonNext.click();
-        waitUntilElementIsClickable(By.xpath("//input[@id = 'login']"), 10);
-        waitUntilElementIsVisible(By.xpath("//input[@id = 'login']"), 10);
+        loginPage.openLoginPage();
+        loginPage.enterLogin(LOGIN);
+        loginPage.enterPassword("somewrongpassword");
+        loginPage.clickNextButton();
 
         String errorTestBoard = driver.findElement(By.xpath("//*[@id='password-error']//*[@class = 'error-message']")).getText();
-
 
         System.out.println("Error text board: " + errorTestBoard);
         Assert.assertEquals("Указан неправильный адрес и/или пароль. Вам нужна помощь со входом?", errorTestBoard);
